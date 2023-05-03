@@ -6,12 +6,13 @@ public class Emissive_Flicker : MonoBehaviour
 {
     public GameObject assetOBJ;
     public Material emissiveMTL;
-    private Color emissiveColor;
+    public Color EndColor;
+    
     public AnimationCurve curve;
-
     public float emissionMax;
 
-    
+    private Color emissiveColor;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -21,7 +22,7 @@ public class Emissive_Flicker : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        emissiveColor = Color.Lerp(Color.black, Color.yellow, Mathf.PingPong(curve.Evaluate (Time.time), emissionMax));
+        emissiveColor = Color.Lerp(Color.black, EndColor, Mathf.PingPong(curve.Evaluate (Time.time), emissionMax));
         emissiveMTL.SetColor("_EmissionColor", emissiveColor);
     }
 }
