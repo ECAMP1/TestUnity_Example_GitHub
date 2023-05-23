@@ -10,31 +10,42 @@ public class Elevator_Lerp : MonoBehaviour
     public float speed;
     public KeyCode keyCommand;
 
+    private Transform origin;
     private bool _isSTILL;
     private bool _isGoing;
     // Start is called before the first frame update
     void Start()
     {
-        
+        _isGoing = false;
     }
 
     // Update is called once per frame
     void Update()
     {
         if (_isGoing)
-            speed = Mathf.MoveTowards(0, 10f, Time.deltaTime);
-            elevator_OBJ.transform.position = Vector3.Lerp (position_01, position_02, speed);
+            elevatorControl();
     }
 
     private void OnTriggerStay(Collider other)
     {
-        if (Input.GetKey(keyCommand))
+        _isGoing = true;
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        _isGoing = false;
+    }
+
+    void elevatorControl()
+    {
+        if (Input.GetKeyDown(keyCommand))
         {
             _isSTILL = !_isSTILL;
             if (_isSTILL)
-                _isGoing = true;
-            Debug.Log("checking");
-                
+                elevator_OBJ.transform.position = Vector3.Lerp(elevator_OBJ.transform.localPosition, position_02, speed * Time.deltaTime);
+            else
+                elevator_OBJ.transform.position = Vector3.Lerp(position_02 ,position_01, speed * Time.deltaTime);
+
         }
     }
 }
