@@ -5,10 +5,10 @@ using UnityEngine;
 public class Door_RotationLerp_OnCommand : MonoBehaviour
 {
     public GameObject door;
-    public KeyCode keyCommand;
-    public Vector3 rotation_Origin;
-    public Vector3 rotation_Goal;
+    public Quaternion rotation_Origin;
+    public Quaternion rotation_Goal;
     public float speed;
+    public KeyCode keyCommand;
 
     private bool _isReady;
     private bool _isUsing;
@@ -26,10 +26,12 @@ public class Door_RotationLerp_OnCommand : MonoBehaviour
             DoorCTRL();
 
         if (_isOpened)
-            door.transform.rotation = Quaternion.Lerp(Quaternion.Euler(door.transform.position), Quaternion.Euler(rotation_Goal), speed * Time.deltaTime);
+            door.transform.rotation = Quaternion.RotateTowards(door.transform.rotation, rotation_Goal, speed);
+        else if (!_isOpened)
+            door.transform.rotation = Quaternion.RotateTowards(door.transform.rotation, rotation_Origin, speed);
     }
 
-    private void OnTriggerEnter(Collider other)
+    private void OnTriggerStay(Collider other)
     {
         _isReady = true;
     }
